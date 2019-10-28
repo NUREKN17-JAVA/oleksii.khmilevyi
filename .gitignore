@@ -14,7 +14,7 @@ hs_err_pid*
 # Target, bin and settings
 target*
 bin*
-.settings*
-.classpath
+./usermanagement/.settings*
+./usermanagement/.classpath
 .project
 .metadata
