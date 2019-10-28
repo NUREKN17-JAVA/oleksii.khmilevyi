@@ -1,0 +1,17 @@
+Testsuite: ua.nure.kn.khmilevoi.usermanagement.UserTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0,007 sec
+------------- Standard Output ---------------
+19
+Alex, Khmilevoi
+18
+19
+18
+19
+------------- ---------------- ---------------
+
+Testcase: testLeafYear took 0,001 sec
+Testcase: testGetFullName took 0,001 sec
+Testcase: testCorrectAgeYesterday took 0 sec
+Testcase: testCorrectAgeToday took 0 sec
+Testcase: testCorrectAgeTomorrow took 0 sec
+Testcase: testGetAge took 0 sec
