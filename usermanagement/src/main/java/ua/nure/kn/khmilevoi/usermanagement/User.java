@@ -7,6 +7,7 @@ public class User implements Serializable {
 
 	private static final long oneDayInMillis = 24 * 60 * 60 * 1000;
 	private static final long serialVersionUID = -6181972498369266938L;
+	private long id;
 	private String firstName;
 	private String lastName;
 	private Date dateOfBirth;
@@ -53,5 +54,13 @@ public class User implements Serializable {
 		final long div = currentDate.getTime() - this.dateOfBirth.getTime() + oneDayInMillis;
 
 		return new Date(div).getYear() - new Date(0).getYear();
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 }
