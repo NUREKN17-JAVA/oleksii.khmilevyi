@@ -1,6 +1,5 @@
 package ua.nure.kn.khmilevoi.usermanagement.db;
 
-import java.sql.Connection;
 import java.util.Date;
 
 import org.dbunit.DatabaseTestCase;
@@ -32,7 +31,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		dao = new HsqldbUserDao();
+		dao = new HsqldbUserDao(this.connectionFactory);
 	}
 
 	protected void tearDown() throws Exception {
