@@ -1,5 +1,6 @@
 package ua.nure.kn.khmilevoi.usermanagement.db;
 
+import java.util.Collection;
 import java.util.Date;
 
 import org.dbunit.DatabaseTestCase;
@@ -37,6 +38,12 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
+	}
+	
+	public void testFindAll() throws DatabaseException {
+		Collection<User> items = dao.findAll();
+		assertNotNull(items);
+		assertEquals(2, items.size());
 	}
 
 	@Override
