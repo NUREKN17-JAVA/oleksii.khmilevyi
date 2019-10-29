@@ -6,6 +6,7 @@ import org.dbunit.DatabaseTestCase;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.XmlDataSet;
 
 import ua.nure.kn.khmilevoi.usermanagement.User;
 
@@ -18,7 +19,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 
 	public void testCreate() throws DatabaseException {
 		User user = new User();
-		
+
 		user.setFirstName(FIRST_NAME);
 		user.setLastName(LAST_NAME);
 		user.setDateOfBirth(new Date());
@@ -27,10 +28,10 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 		assertNotNull(userToCheck);
 		assertNotNull(userToCheck.getId());
 	}
-	
+
 	protected void setUp() throws Exception {
 		super.setUp();
-		
+
 		dao = new HsqldbUserDao(this.connectionFactory);
 	}
 
@@ -41,13 +42,15 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 	@Override
 	protected IDatabaseConnection getConnection() throws Exception {
 		this.connectionFactory = new ConnectionFactoryImplementation();
-				
+
 		return new DatabaseConnection(this.connectionFactory.createConnection());
 	}
 
 	@Override
 	protected IDataSet getDataSet() throws Exception {
-		// TODO Auto-generated method stub
+
+		IDataSet dataSet = new XmlDataSet(getClass().getClassLoader().getResourceAsStream("usersDataSet.xml"));
+
 		return null;
 	}
 
