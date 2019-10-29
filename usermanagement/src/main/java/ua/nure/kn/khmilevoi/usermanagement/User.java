@@ -39,15 +39,15 @@ public class User implements Serializable {
 		return this.firstName + ", " + this.lastName;
 	}
 
-	public long getAge() {
+	public int getAge() {
 		return this._getAge(new Date());
 	}
 
-	public long getAge(Date current) {
+	public int getAge(Date current) {
 		return this._getAge(current);
 	}
 
-	private long _getAge(Date current) {
+	private int _getAge(Date current) {
 		final Date currentDate = current;
 
 		final long div = currentDate.getTime() - this.dateOfBirth.getTime() + oneDayInMillis;
