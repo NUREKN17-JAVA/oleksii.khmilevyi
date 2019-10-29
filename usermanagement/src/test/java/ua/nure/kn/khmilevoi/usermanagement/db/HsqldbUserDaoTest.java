@@ -14,7 +14,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 	private static final String FIRST_NAME = "Alex";
 	private HsqldbUserDao dao;
 
-	public void testCreate() throws DatabaseExeption {
+	public void testCreate() throws DatabaseException {
 		User user = new User();
 		
 		user.setFirstName(FIRST_NAME);

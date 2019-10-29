@@ -3,13 +3,13 @@ package ua.nure.kn.khmilevoi.usermanagement.db;
 import java.util.Collection;
 
 public interface Dao<T> {
-	T create(T entity) throws DatabaseExeption;
+	T create(T entity) throws DatabaseException;
 
-	void update(T entity) throws DatabaseExeption;
+	void update(T entity) throws DatabaseException;
 
-	void delete(T entity) throws DatabaseExeption;
+	void delete(T entity) throws DatabaseException;
 
-	T find(long id) throws DatabaseExeption;
+	T find(long id) throws DatabaseException;
 
-	Collection<T> findAll() throws DatabaseExeption;
+	Collection<T> findAll() throws DatabaseException;
 }
