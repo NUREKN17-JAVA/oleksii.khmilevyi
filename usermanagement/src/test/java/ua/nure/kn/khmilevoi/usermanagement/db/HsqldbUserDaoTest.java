@@ -1,8 +1,10 @@
 package ua.nure.kn.khmilevoi.usermanagement.db;
 
+import java.sql.Connection;
 import java.util.Date;
 
 import org.dbunit.DatabaseTestCase;
+import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 
@@ -13,6 +15,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 	private static final String LAST_NAME = "Khmilevoi";
 	private static final String FIRST_NAME = "Alex";
 	private HsqldbUserDao dao;
+	private ConnectionFactory connectionFactory;
 
 	public void testCreate() throws DatabaseException {
 		User user = new User();
@@ -38,8 +41,9 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 
 	@Override
 	protected IDatabaseConnection getConnection() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		this.connectionFactory = new ConnectionFactoryImplementation();
+				
+		return new DatabaseConnection(this.connectionFactory.createConnection());
 	}
 
 	@Override

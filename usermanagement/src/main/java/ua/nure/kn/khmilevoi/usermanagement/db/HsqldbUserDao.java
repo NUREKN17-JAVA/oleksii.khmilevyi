@@ -6,6 +6,12 @@ import ua.nure.kn.khmilevoi.usermanagement.User;
 
 public class HsqldbUserDao implements Dao<User> {
 
+	private ConnectionFactory connectionFactory;
+
+	public HsqldbUserDao(ConnectionFactory connectionFactory) {
+		this.connectionFactory = connectionFactory;
+	}
+
 	public User create(User entity) throws DatabaseException {
 		// TODO Auto-generated method stub
 		return null;
@@ -13,12 +19,12 @@ public class HsqldbUserDao implements Dao<User> {
 
 	public void update(User entity) throws DatabaseException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void delete(User entity) throws DatabaseException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public User find(long id) throws DatabaseException {
