@@ -58,7 +58,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 
 		IDataSet dataSet = new XmlDataSet(getClass().getClassLoader().getResourceAsStream("usersDataSet.xml"));
 
-		return null;
+		return dataSet;
 	}
 
 }
