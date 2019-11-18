@@ -1,30 +1,52 @@
 package ua.nure.kn.khmilevoi.usermanagement.db;
 
+import java.io.IOException;
 import java.util.Properties;
 
-public abstract class DaoFactory {
+public class DaoFactory {
 
-	private static final String DAO_FACTORY = "dao.Factory";
+	private static final String USER_DAO = "dao.UserDao";
 
-	protected DaoFactory() {
-	}
-
-	protected static DaoFactory instance;
+	protected final static DaoFactory instance = new DaoFactory();
 	protected static Properties properties;
 
 	public static synchronized DaoFactory getInstance() {
-		if (DaoFactory.instance == null) {
-			Class<?> factoryClass;
-			
-
-			try {
-				factoryClass = Class.forName(properties.getProperty(DAO_FACTORY));
-				DaoFactory.instance = (DaoFactory) factoryClass.newInstance();
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
-
 		return DaoFactory.instance;
 	}
+
+	private DaoFactory() {
+		DaoFactory.properties = new Properties();
+		try {
+			DaoFactory.properties.load(getClass().getClassLoader().getResourceAsStream("settings.properties"));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private ConnectionFactory getConnectionFactory() {
+		
+		String user = properties.getProperty("connection.user");
+		String password = properties.getProperty("connection.password");
+		String url = properties.getProperty("connection.url");
+		String driver = properties.getProperty("connection.driver");
+		return new ConnectionFactoryImplementation(driver, url, user, password);
+	}
+
+	public UserDao getUserDao() {
+		UserDao userDao = null;
+		try {
+			Class type = Class.forName(properties.getProperty(USER_DAO));
+			userDao = (UserDao)type.newInstance();
+			userDao.setConnectionFactory(getConnectionFactory());
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		} catch (InstantiationException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+		return userDao;
+
+	}
+
 }

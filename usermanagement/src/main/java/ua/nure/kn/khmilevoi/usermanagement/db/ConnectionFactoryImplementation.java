@@ -2,25 +2,33 @@ package ua.nure.kn.khmilevoi.usermanagement.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class ConnectionFactoryImplementation implements ConnectionFactory {
 
-	private static final String DRIVER = "org.hsqldb.jdbcDriver";
-	private String url = "jdbc:hsqldb:file:db/usermanagement";
-	private String user = "sa";
-	private String password = "";
+	private String driver;
+	private String url;
+	private String user;
+	private String password;
+
+	public ConnectionFactoryImplementation(String driver, String url, String user, String password) {
+		this.driver = driver;
+		this.url = url;
+		this.user = user;
+		this.password = password;
+	}
 
 	public Connection createConnection() throws DatabaseException {
-		
+
 		try {
-			Class.forName(DRIVER);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
+			Class.forName(driver);
+		} catch (ClassNotFoundException ex) {
+			throw new RuntimeException(ex);
 		}
-		
+
 		try {
 			return DriverManager.getConnection(url, user, password);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			throw new DatabaseException(e);
 		}
 	}

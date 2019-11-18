@@ -1,105 +1,156 @@
 package ua.nure.kn.khmilevoi.usermanagement.db;
 
-import java.sql.Statement;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.LinkedList;
 
 import ua.nure.kn.khmilevoi.usermanagement.User;
 
-public class HsqldbUserDao implements Dao<User> {
+import java.sql.PreparedStatement;
+import java.sql.CallableStatement;
 
-	private static final String SELECT_ALL_USERS = "SELECT id, firstname, lastname, dateofbirth FROM users";
-	private static final String CALL_IDENTITY = "CALL IDENTITY()";
-	private static final String INSERT_USER_QUERY = "INSERT INTO users(firstname, lastname, dateofbirth) VALUES(?, ?, ?)";
+public class HsqldbUserDao implements UserDao {
+
+	private static final String SELECT_ONE_QUERY = "SELECT * FROM users AS u WHERE u.id = ?";
+	private static final String DELETE_QUERY = "DELETE FROM users AS u WHERE u.id=?";
+	private static final String UPDATE_QUERY = "UPDATE users AS u SET firstname=?, lastname=?, dateofbirth=? WHERE u.id=?";
+	private static final String SELECT_ALL_QUERY = "SELECT * FROM users";
+	private static final String INSERT_QUERY = "INSERT INTO users (firstname, lastname, dateofbirth) VALUES(?,?,?)";
 	private ConnectionFactory connectionFactory;
-
-	public HsqldbUserDao(ConnectionFactory connectionFactory) {
-		this.connectionFactory = connectionFactory;
+	
+	public HsqldbUserDao(){
+		
+	}
+	
+	public HsqldbUserDao(ConnectionFactory connectionFactoryParam){
+		connectionFactory = connectionFactoryParam;
 	}
 
-	public User create(User entity) throws DatabaseException {
-
-		Connection connection = connectionFactory.createConnection();
+	public User create(User user) throws DatabaseException {
 		try {
-			PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_QUERY);
-			preparedStatement.setString(2, entity.getFirstName());
-			preparedStatement.setString(2, entity.getLastName());
-			preparedStatement.setDate(3, new Date(entity.getDateOfBirth().getTime()));
-
-			int numberOfRows = preparedStatement.executeUpdate();
-
-			if (numberOfRows != 1) {
-				throw new DatabaseException("Number of rows: " + numberOfRows);
+			Connection dbConnection = connectionFactory.createConnection();
+			PreparedStatement statement = 
+					dbConnection.prepareStatement(INSERT_QUERY);
+			statement.setString(1, user.getFirstName());
+			statement.setString(2, user.getLastName());
+			statement.setDate(3, new Date(user.getDateOfBirth().getTime()));
+			
+			int rowsAffected = statement.executeUpdate();
+			if(rowsAffected != 1){
+				throw new DatabaseException("Rows affected on query - " + rowsAffected);
 			}
-
-			CallableStatement callableStatement = connection.prepareCall(CALL_IDENTITY);
-			ResultSet keys = callableStatement.executeQuery();
-
-			if (keys.next()) {
-				entity.setId(keys.getLong(1));
+			CallableStatement callable = dbConnection.prepareCall("call IDENTITY()");
+			ResultSet keys = callable.executeQuery();
+			if(keys.next()){
+				user.setId(new Long(keys.getLong(1)));
 			}
-
+			
 			keys.close();
-			callableStatement.close();
-			preparedStatement.close();
-			connection.close();
+			callable.close();
+			statement.close();
+			dbConnection.close();
+			
+			return user;
+		} catch (DatabaseException e){
+			throw e;
+		}
+		catch (SQLException e) {
+			throw new DatabaseException(e);
+		}
+	}
 
-			return entity;
+	public void update(User user) throws DatabaseException {
+		try {
+			Connection dbConnection = connectionFactory.createConnection();
+			PreparedStatement statement = dbConnection.prepareStatement(UPDATE_QUERY);
+			statement.setString(1, user.getFirstName());
+			statement.setString(2, user.getLastName());
+			statement.setDate(3, new Date(user.getDateOfBirth().getTime()));
+			statement.setLong(4, user.getId());
+			int rowsUpdated = statement.executeUpdate();
+			if(rowsUpdated != 1){
+				throw new DatabaseException("Rows updated count was -" + rowsUpdated);
+			}
+			statement.close();
+			dbConnection.close();
 		} catch (SQLException e) {
 			throw new DatabaseException(e);
-		} catch (DatabaseException e) {
-			throw e;
 		}
 
 	}
 
-	public void update(User entity) throws DatabaseException {
-		// TODO Auto-generated method stub
-
+	public void delete(long userId) throws DatabaseException {
+		try {
+			Connection dbConnection = connectionFactory.createConnection();
+			PreparedStatement statement = dbConnection.prepareStatement(DELETE_QUERY);
+			statement.setLong(1, userId);
+			int rowsDeleted = statement.executeUpdate();
+			if(rowsDeleted != 1){
+				throw new DatabaseException("Deleted rows count is - " + rowsDeleted);
+			}
+			statement.close();
+			dbConnection.close();
+		} catch (SQLException e) {
+			throw new DatabaseException(e);
+		}
 	}
 
-	public void delete(User entity) throws DatabaseException {
-		// TODO Auto-generated method stub
-
-	}
-
-	public User find(long id) throws DatabaseException {
-		// TODO Auto-generated method stub
-		return null;
+	public User find(long userId) throws DatabaseException {
+		try {
+			Connection dbConnection = connectionFactory.createConnection();
+			PreparedStatement statement = dbConnection.prepareStatement(SELECT_ONE_QUERY);
+			statement.setLong(1, userId);
+			ResultSet resultSet = statement.executeQuery();
+			User user = null;
+			if(resultSet.next()){
+				user = new User();
+				user.setId(new Long(resultSet.getLong(1)));
+				user.setFirstName(resultSet.getString(2));
+				user.setLastName(resultSet.getString(3));
+				user.setDateOfBirth(resultSet.getDate(4));
+				
+			}
+			resultSet.close();
+			statement.close();
+			dbConnection.close();
+			return user;
+		} catch (SQLException e) {
+			throw new DatabaseException(e);
+		}
 	}
 
 	public Collection<User> findAll() throws DatabaseException {
-
-		Collection<User> result = new LinkedList<User>();
 		try {
-			Connection connection = connectionFactory.createConnection();
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery(SELECT_ALL_USERS);
-
-			while (resultSet.next()) {
+			Collection<User> result = new LinkedList<User>();
+			Connection dbConnection = connectionFactory.createConnection();
+			Statement statement = dbConnection.createStatement();
+			ResultSet resultSet = statement.executeQuery(SELECT_ALL_QUERY);
+			while(resultSet.next()){
 				User user = new User();
-				user.setId(resultSet.getLong(1));
+				user.setId(new Long(resultSet.getLong(1)));
 				user.setFirstName(resultSet.getString(2));
 				user.setLastName(resultSet.getString(3));
 				user.setDateOfBirth(resultSet.getDate(4));
 				result.add(user);
 			}
-
+			
 			resultSet.close();
 			statement.close();
-			connection.close();
+			dbConnection.close();
+			
+			return result;
 		} catch (SQLException e) {
 			throw new DatabaseException(e);
 		}
+	}
 
-		return result;
-
+	public void setConnectionFactory(ConnectionFactory connectionFactory) {
+		this.connectionFactory = connectionFactory;
+		
 	}
 
 }
