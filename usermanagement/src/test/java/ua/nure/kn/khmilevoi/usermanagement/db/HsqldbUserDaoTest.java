@@ -17,9 +17,9 @@ import ua.nure.kn.khmilevoi.usermanagement.User;
 public class HsqldbUserDaoTest extends DatabaseTestCase {
 
 	private static final String USER_DATA_SET_XML = "src/test/resources/usersDataSet.xml";
-	private static final Date CHANGED_DATE = new Date();
-	private static final String CHANGED_LAST_NAME = "changedLastName";
-	private static final String CHANGED_FIRST_NAME = "changedFirstName";
+	private static final Date NEW_DATE = new Date();
+	private static final String NEW_LAST_NAME = "Temchur";
+	private static final String NEW_FIRST_NAME = "Karina";
 	HsqldbUserDao dao;
 	ConnectionFactory connectionFactory;
 
@@ -98,15 +98,15 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 			dao.create(user);
 			long id = user.getId();
 
-			user.setFirstName(CHANGED_FIRST_NAME);
-			user.setLastName(CHANGED_LAST_NAME);
-			user.setDateOfBirth(CHANGED_DATE);
+			user.setFirstName(NEW_FIRST_NAME);
+			user.setLastName(NEW_LAST_NAME);
+			user.setDateOfBirth(NEW_DATE);
 
 			dao.update(user);
 			User afterUpdate = dao.find(id);
 
-			assertEquals(CHANGED_FIRST_NAME, afterUpdate.getFirstName());
-			assertEquals(CHANGED_LAST_NAME, afterUpdate.getLastName());
+			assertEquals(NEW_FIRST_NAME, afterUpdate.getFirstName());
+			assertEquals(NEW_LAST_NAME, afterUpdate.getLastName());
 		} catch (DatabaseException e) {
 			System.out.println("update: " + e);
 			fail(e.toString());
