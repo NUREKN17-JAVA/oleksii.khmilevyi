@@ -135,8 +135,9 @@ public class HsqldbUserDao implements UserDao {
 				user.setFirstName(resultSet.getString(2));
 				user.setLastName(resultSet.getString(3));
 				user.setDateOfBirth(resultSet.getDate(4));
-				result.add(user);
-			}
+				result.add(user); 
+			} 
+			
 			
 			resultSet.close();
 			statement.close();
