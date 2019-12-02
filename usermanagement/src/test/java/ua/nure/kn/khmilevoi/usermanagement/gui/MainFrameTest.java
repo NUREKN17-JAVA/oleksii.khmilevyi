@@ -95,7 +95,7 @@ public class MainFrameTest extends JFCTestCase {
 	public void testAddUser() {
 		User expectedUser = createUser();
 
-		mockUserDao.expectAndReturn("CreateUser", expectedUser, expectedUser);
+		mockUserDao.expectAndReturn("create", expectedUser, expectedUser);
 		users.add(expectedUser);
 		mockUserDao.expectAndReturn("findAll", users);
 
@@ -129,9 +129,9 @@ public class MainFrameTest extends JFCTestCase {
 	public void testDetailsUser() {
 		User expectedUser = createUser();
 
-		mockUserDao.expectAndReturn("GetUser", expectedUser.getId(), expectedUser);
+		mockUserDao.expectAndReturn("find", expectedUser.getId(), expectedUser);
 		ArrayList users = new ArrayList(this.users);
-		mockUserDao.expectAndReturn("GetAll", users);
+		mockUserDao.expectAndReturn("findAll", users);
 
 		JTable table = (JTable) this.find(JTable.class, "userTable");
 		assertEquals(1, table.getRowCount());
@@ -160,8 +160,8 @@ public class MainFrameTest extends JFCTestCase {
 		User expectedUser = createUser();
 
 		ArrayList expectedUsers = new ArrayList();
-		mockUserDao.expectAndReturn("GetAll", expectedUsers);
-		mockUserDao.expect("DeleteUser", expectedUser.getId());
+		mockUserDao.expectAndReturn("findAll", expectedUsers);
+		mockUserDao.expect("delete", expectedUser.getId());
 
 		JTable table = (JTable) this.find(JTable.class, "userTable");
 		assertEquals(1, table.getRowCount());
@@ -188,10 +188,10 @@ public class MainFrameTest extends JFCTestCase {
 	public void testEditUser() {
 		User expectedUser = createUser();
 
-		mockUserDao.expectAndReturn("GetUser", expectedUser.getId(), expectedUser);
-		mockUserDao.expect("UpdateUser", expectedUser);
+		mockUserDao.expectAndReturn("find", expectedUser.getId(), expectedUser);
+		mockUserDao.expect("update", expectedUser);
 		ArrayList users = new ArrayList(this.users);
-		mockUserDao.expectAndReturn("GetAll", users);
+		mockUserDao.expectAndReturn("findAll", users);
 
 		JTable table = (JTable) this.find(JTable.class, "userTable");
 		assertEquals(1, table.getRowCount());
