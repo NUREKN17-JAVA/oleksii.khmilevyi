@@ -14,7 +14,6 @@ import ua.nure.kn.khmilevoi.usermanagement.db.DatabaseException;
 
 public class BrowseServlet extends HttpServlet {
 
-	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		if (req.getParameter("addButton") != null) {
 			add(req, resp);
