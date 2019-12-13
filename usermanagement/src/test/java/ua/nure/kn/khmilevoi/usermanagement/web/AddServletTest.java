@@ -27,7 +27,7 @@ public class AddServletTest extends MockServletTestCase {
 		User user = this.createUser();
 		user.setId(-1);
 		User createdUser = this.createUser();
-		getMockUserDao().expectAndReturn("createUser", user, createdUser);
+		getMockUserDao().expectAndReturn("create", user, createdUser);
 
 		addRequestParameter("firstName", "Alex");
 		addRequestParameter("lastName", "Khmilevoi");
