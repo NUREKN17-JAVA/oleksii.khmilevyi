@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app version="2.4">
+
+	<servlet>
+		<servlet-name>Browse Servlet</servlet-name>
+		<servlet-class>web.browseServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Browse Servlet</servlet-name>
+		<url-pattern>/browse</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Edit Servlet</servlet-name>
+		<servlet-class>web.editServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Edit Servlet</servlet-name>
+		<url-pattern>/edit</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Add Servlet</servlet-name>
+		<servlet-class>web.addServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Add Servlet</servlet-name>
+		<url-pattern>/add</url-pattern>
+	</servlet-mapping>
+</web-app>
