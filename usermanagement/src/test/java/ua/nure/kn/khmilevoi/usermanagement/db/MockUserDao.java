@@ -34,6 +34,10 @@ public class MockUserDao implements UserDao {
 		return (User) users.get(currId.longValue());
 	}
 
+	public Collection find(String firstName, String lastName) throws DatabaseException {
+		throw new UnsupportedOperationException();
+	}
+
 	public Collection findAll() throws DatabaseException {
 		return users.values();
 	}
@@ -41,4 +45,5 @@ public class MockUserDao implements UserDao {
 	public void setConnectionFactory(ConnectionFactory connectionFactory) {
 
 	}
+
 }
