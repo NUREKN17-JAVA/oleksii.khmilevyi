@@ -5,11 +5,11 @@ import java.util.Date;
 
 import ua.nure.kn.khmilevoi.usermanagement.User;
 
-public class EditServletTest extends MockServletTestCase {
+public class AddServletTest extends MockServletTestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		createServlet(EditServlet.class);
+		createServlet(AddServlet.class);
 	}
 
 	User createUser() {
@@ -22,12 +22,13 @@ public class EditServletTest extends MockServletTestCase {
 		return user;
 	}
 
-	public void testEdit() {
+	public void testAdd() {
 		Date date = new Date();
 		User user = this.createUser();
-		getMockUserDao().expect("updateUser", user);
+		user.setId(-1);
+		User createdUser = this.createUser();
+		getMockUserDao().expectAndReturn("createUser", user, createdUser);
 
-		addRequestParameter("id", "1");
 		addRequestParameter("firstName", "Alex");
 		addRequestParameter("lastName", "Khmilevoi");
 		addRequestParameter("date", DateFormat.getDateInstance().format(date));
@@ -35,11 +36,11 @@ public class EditServletTest extends MockServletTestCase {
 		doPost();
 	}
 
-	public void testEditEmptyFirstName() {
+	public void testAddEmptyFirstName() {
 		Date date = new Date();
 
 		addRequestParameter("id", "1");
-		addRequestParameter("lastName", "Khmilevoi");
+		addRequestParameter("lastName", "Khmileoi");
 		addRequestParameter("date", DateFormat.getDateInstance().format(date));
 		addRequestParameter("okButton");
 		doPost();
@@ -47,7 +48,7 @@ public class EditServletTest extends MockServletTestCase {
 		assertNotNull("Cant find a message in session scope", errorMsg);
 	}
 
-	public void testEditEmptyLastName() {
+	public void testAddEmptyLastName() {
 		Date date = new Date();
 
 		addRequestParameter("id", "1");
@@ -59,7 +60,7 @@ public class EditServletTest extends MockServletTestCase {
 		assertNotNull("Cant find a message in session scope", errorMsg);
 	}
 
-	public void testEditEmptyDate() {
+	public void testAddEmptyDate() {
 		addRequestParameter("id", "1");
 		addRequestParameter("firstName", "Alex");
 		addRequestParameter("lastName", "Khmilevoi");
@@ -69,7 +70,7 @@ public class EditServletTest extends MockServletTestCase {
 		assertNotNull("Cant find a message in session scope", errorMsg);
 	}
 
-	public void testEditDateValidate() {
+	public void testAddDateValidate() {
 		Date date = new Date();
 
 		addRequestParameter("id", "1");
