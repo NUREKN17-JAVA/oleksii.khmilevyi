@@ -46,7 +46,7 @@ public class MainFrameTest extends JFCTestCase {
 
 			users = new ArrayList<User>();
 
-			User user = createUser();
+			User user = this.createUser();
 			users.add(user);
 			mockUserDao.expectAndReturn("findAll", users);
 
@@ -93,7 +93,7 @@ public class MainFrameTest extends JFCTestCase {
 	}
 
 	public void testAddUser() {
-		User expectedUser = createUser();
+		User expectedUser = this.createUser();
 
 		mockUserDao.expectAndReturn("create", expectedUser, expectedUser);
 		users.add(expectedUser);
@@ -127,7 +127,7 @@ public class MainFrameTest extends JFCTestCase {
 	}
 
 	public void testDetailsUser() {
-		User expectedUser = createUser();
+		User expectedUser = this.createUser();
 
 		mockUserDao.expectAndReturn("find", expectedUser.getId(), expectedUser);
 		ArrayList users = new ArrayList(this.users);
@@ -157,7 +157,7 @@ public class MainFrameTest extends JFCTestCase {
 	}
 
 	public void testDeleteUser() {
-		User expectedUser = createUser();
+		User expectedUser = this.createUser();
 
 		ArrayList expectedUsers = new ArrayList();
 		mockUserDao.expectAndReturn("findAll", expectedUsers);
