@@ -22,9 +22,15 @@
 				</tr>
 			</c:forEach>
 		</table>
-		<input type="submit" name="addButton" value="add" /> 
-		<input type="submit" name="editButton" value="edit" /> 
-		<input type="submit" name="deleteButton" value="delete" /> 
-		<input type="submit" name="detailsButton" value="details" />
+		<input type="submit" name="addButton" value="add" /> <input
+			type="submit" name="editButton" value="edit" /> <input type="submit"
+			name="deleteButton" value="delete" /> <input type="submit"
+			name="detailsButton" value="details" />
 	</form>
+
+	<c:if test="${requestScope.error != null}">
+		<script>
+			alert('${requestScope.error}');
+		</script>
+	</c:if>
 </body>
